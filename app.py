@@ -80,7 +80,7 @@ with st.sidebar:
                 calendar_events.append(new_event)
                 save_events(calendar_events)
                 st.success("Evento añadido con éxito")
-                st.experimental_rerun()
+                st.rerun()
 
     elif option == "Editar Evento":
         st.subheader("Editar Evento")
@@ -108,13 +108,13 @@ with st.sidebar:
                         }
                         save_events(calendar_events)
                         st.success("Evento actualizado con éxito")
-                        st.experimental_rerun()
+                        st.rerun()
                     
                     if delete_submit:
                         calendar_events.pop(selected_event_index)
                         save_events(calendar_events)
                         st.success("Evento eliminado con éxito")
-                        st.experimental_rerun()
+                        st.rerun()
         else:
             st.write("No hay eventos para editar o eliminar.")
 
