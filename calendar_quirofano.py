@@ -1,6 +1,7 @@
 import streamlit as st
 from datetime import datetime, timedelta
 import json
+import base64
 import pandas as pd
 from streamlit_calendar import calendar
 
@@ -22,8 +23,40 @@ def save_events(events):
     with open('events.json', 'w') as f:
         json.dump(events, f)
 
+# Configurar título de la página e ícono de pestaña
+st.set_page_config(
+    page_title="Calendario Quirofanos MHC",
+    page_icon=":calendar:",
+    layout="wide",
+    initial_sidebar_state="expanded",
+    menu_items={
+        'Get Help': 'https://wa.me/5930993513082?text=Solicito%20ayuda%20con%20la%20app%20MHC',
+        'Report a bug': "https://wa.me/5930993513082?text=Solicito%20ayuda%20con%20la%20app%20MHC",
+        'About': "# App creada por CodeCodix"
+    }
+)
+
+def get_base64_of_bin_file(bin_file):
+    with open(bin_file, 'rb') as f:
+        data = f.read()
+    return base64.b64encode(data).decode()
+
+img_base64 = get_base64_of_bin_file('MHC_Marketing_background.jpg')
+
+st.markdown(
+    f"""
+    <style>
+    .stApp {{
+        background: url('data:image/jpeg;base64,{img_base64}') no-repeat center center fixed;
+        background-size: cover;
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 # Configurar la interfaz de Streamlit
-st.title("Calendario de Quirófanos")
+st.title("Gestión de Calendario de Quirófanos")
 
 # Opciones del calendario
 calendar_options = {
@@ -40,7 +73,7 @@ calendar_options = {
 
 # Mostrar el calendario
 calendar_component = calendar(events=calendar_events, options=calendar_options)
-# st.write(calendar_component)
+st.write(calendar_component)
 
 # Mostrar eventos en una tabla
 st.header("Eventos Programados")
@@ -117,7 +150,6 @@ with st.sidebar:
                         st.rerun()
         else:
             st.write("No hay eventos para editar o eliminar.")
-
 
 
 
